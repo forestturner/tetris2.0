@@ -25,8 +25,8 @@ class Tetris {
     this.nextTetrisBlock4;
     this.currentRotation;
     this.level = 1;
-    this.tRow;
-    this.tCol;
+    this.currentTetrisRow;
+    this.currentTetrisCol;
     this.timeCount;
     this.next_t;
     this.next_t2;
@@ -43,6 +43,9 @@ class Tetris {
     this.score = 0;
     this.firstRenderOfScore = true;
     this.scoreNeededToLevel = 500;
+    this.nextTetrisBlock2 =Math.floor(Math.random()*7);
+    this.nextTetrisBlock3 =Math.floor(Math.random()*7);
+    this.nextTetrisBlock4 =Math.floor(Math.random()*7);
 
   }
   run(){
@@ -50,9 +53,6 @@ class Tetris {
     this.background();
     this.setTetris();
     this.nextTetrisBlock = Math.floor(Math.random()*7);
-    this.nextTetrisBlock2 =Math.floor(Math.random()*7);
-    this.nextTetrisBlock3 =Math.floor(Math.random()*7);
-    this.nextTetrisBlock4 =Math.floor(Math.random()*7);
     this.renderTetris();
     createjs.Ticker.setFPS(100);
     createjs.Ticker.addEventListener("tick",this.stage);
@@ -263,14 +263,14 @@ class Tetris {
     this.nextTetrisBlock3 = this.nextTetrisBlock4;
     this.nextTetrisBlock4=Math.floor(Math.random()*7);
   	this.currentRotation=0;
-  	this.tRow=1;
-  	this.tCol=3;
+  	this.currentTetrisRow=1;
+  	this.currentTetrisCol=3;
   	this.drawTetrisBlock();
   	this.drawNext();
     this.drawNext2();
     this.drawNext3();
     this.drawNext4();
-  	if (this.check(this.tRow,this.tCol,this.currentRotation)) {
+  	if (this.check(this.currentTetrisRow,this.currentTetrisCol,this.currentRotation)) {
   		clearTimeout(this.timeCount);
       let _this = this;
   		this.timeCount = setInterval(this.onTime.bind(this), (time - (this.level *75)));
@@ -310,8 +310,8 @@ class Tetris {
   	this.placeTetrisBlock();
   }
   placeTetrisBlock() {
-  	this.tetrisBlock.x=this.tCol*this.size;
-  	this.tetrisBlock.y=this.tRow*this.size;
+  	this.tetrisBlock.x=this.currentTetrisCol*this.size;
+  	this.tetrisBlock.y=this.currentTetrisRow*this.size;
   }
   pause(){
     this.pause = true;
@@ -340,8 +340,8 @@ class Tetris {
         this.nextTetrisBlock3;
         this.nextTetrisBlock4;
         this.currentRotation;
-        this.tRow;
-        this.tCol;
+        this.currentTetrisRow;
+        this.currentTetrisCol;
         this.timeCount;
         this.next_t;
         this.next_t2;
@@ -370,8 +370,8 @@ class Tetris {
         this.nextTetrisBlock3;
         this.nextTetrisBlock4;
         this.currentRotation;
-        this.tRow;
-        this.tCol;
+        this.currentTetrisRow;
+        this.currentTetrisCol;
         this.timeCount;
         this.next_t;
         this.next_t2;
@@ -388,42 +388,42 @@ class Tetris {
       break;
   		case 37 :
   		if (this.gameOver || this.pause) return;
-  		if (this.check(this.tRow,this.tCol-1,this.currentRotation)) {
-  			this.tCol--;
+  		if (this.check(this.currentTetrisRow,this.currentTetrisCol-1,this.currentRotation)) {
+  			this.currentTetrisCol--;
   			this.placeTetrisBlock();
   		}
   		e.preventDefault();
   		break;
   		case 39 :
   		if (this.gameOver || this.pause) return;
-  		if (this.check(this.tRow,this.tCol+1,this.currentRotation)) {
-  			this.tCol++;
+  		if (this.check(this.currentTetrisRow,this.currentTetrisCol+1,this.currentRotation)) {
+  			this.currentTetrisCol++;
   			this.placeTetrisBlock();
   		}
   		e.preventDefault();
   		break;
   		case 38 :
   		if (this.gameOver || this.pause) return;
-  		if (this.tRow < 0) this.tRow = 0;
-  		if (this.tCol < 0) this.tCol = 0;
-  		if (this.tCol > this.col - this.tetrisBlocks[this.activeTetris][this.currentRotation].length)
-  			this.tCol = this.col - this.tetrisBlocks[this.activeTetris][this.currentRotation].length;
+  		if (this.currentTetrisRow < 0) this.currentTetrisRow = 0;
+  		if (this.currentTetrisCol < 0) this.currentTetrisCol = 0;
+  		if (this.currentTetrisCol > this.col - this.tetrisBlocks[this.activeTetris][this.currentRotation].length)
+  			this.currentTetrisCol = this.col - this.tetrisBlocks[this.activeTetris][this.currentRotation].length;
   		let ct=this.currentRotation;
           //check rotate
-  		let tmpRow = this.tRow;
-  		let tmpCol = this.tCol;
+  		let tmpRow = this.currentTetrisRow;
+  		let tmpCol = this.currentTetrisCol;
   		let tmpRot = ct;
   		let rot = (ct + 1) % this.tetrisBlocks[this.activeTetris].length;
-  		if (this.check(this.tRow, this.tCol, rot)) {
+  		if (this.check(this.currentTetrisRow, this.currentTetrisCol, rot)) {
   			this.currentRotation=rot;
   			this.stage.removeChild(this.tetrisBlock);
   			this.drawTetrisBlock();
   			this.placeTetrisBlock();
   		}
-  		if(!this.check(this.tRow, this.tCol, rot)) {
+  		if(!this.check(this.currentTetrisRow, this.currentTetrisCol, rot)) {
   			this.currentRotation = tmpRot;
-  			this.tCol = tmpCol;
-  			this.tRow = tmpRow;
+  			this.currentTetrisCol = tmpCol;
+  			this.currentTetrisRow = tmpRow;
   			this.stage.removeChild(this.tetrisBlock);
   			this.drawTetrisBlock();
   			this.placeTetrisBlock();
@@ -432,8 +432,8 @@ class Tetris {
   		break;
   		case 40 :
   		if (this.gameOver || this.pause) return;
-  		if (this.check(this.tRow+1,this.tCol)) {
-  			this.tRow++;
+  		if (this.check(this.currentTetrisRow+1,this.currentTetrisCol)) {
+  			this.currentTetrisRow++;
   			this.placeTetrisBlock();
   		} else {
   			this.landTetrisBlock();
@@ -455,12 +455,12 @@ class Tetris {
   				// landed.mask = this.masker;
           landed.graphics.beginStroke('#111111');
   				landed.graphics.beginFill(this.colors[this.activeTetris]);
-  				landed.graphics.drawRect(this.size*(this.tCol+j),this.size*(this.tRow+i),this.size,this.size);
+  				landed.graphics.drawRect(this.size*(this.currentTetrisCol+j),this.size*(this.currentTetrisRow+i),this.size,this.size);
   				this.stage.addChild(landed);
 
-  				this.active[this.tRow+i][this.tCol+j]=1;
+  				this.active[this.currentTetrisRow+i][this.currentTetrisCol+j]=1;
 
-  				this.dead[this.tRow+i][this.tCol+j]=landed;
+  				this.dead[this.currentTetrisRow+i][this.currentTetrisCol+j]=landed;
   			}
   		}
   	}
@@ -536,8 +536,8 @@ class Tetris {
     if (this.pause){
       return;
     }
-  	if (this.check(this.tRow+1,this.tCol,this.currentRotation)) {
-  		this.tRow++;
+  	if (this.check(this.currentTetrisRow+1,this.currentTetrisCol,this.currentRotation)) {
+  		this.currentTetrisRow++;
   		this.placeTetrisBlock();
   	} else {
   		this.landTetrisBlock();

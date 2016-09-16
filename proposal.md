@@ -8,11 +8,10 @@
 
 When playing Tetris, users will be able to:
 
-- [ ] Start, pause, and reset the game board
+- [ ] Start and reset the game board
 - [ ] players can use arrow keys and space bar to flip pieces 90 degrees
 - [ ] score will be kept.
 - [ ] leveling up will increase the speed of the pieces falling.
-- [ ] bonuses will appear.
 
 In addition, this project will include:
 
@@ -62,7 +61,7 @@ In addition to the webpack entry file, there will be three scripts involved in t
 
 **Day 4**: Install the controls for the user to interact with the game.  Style the frontend, making it polished and professional.  Goals for the day:
 
-- Create controls for stop, start, and reset and game controls.
+- Create controls for  start and reset and game controls.
 - Have a styled `Canvas`, nice looking controls and title
 - Bonus - leveling up animations.
 
