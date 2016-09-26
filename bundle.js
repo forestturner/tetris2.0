@@ -71,8 +71,8 @@
 	    this.nextTetrisBlock4;
 	    this.currentRotation;
 	    this.level = 1;
-	    this.tRow;
-	    this.tCol;
+	    this.currentTetrisRow;
+	    this.currentTetrisCol;
 	    this.timeCount;
 	    this.next_t;
 	    this.next_t2;
@@ -89,6 +89,9 @@
 	    this.score = 0;
 	    this.firstRenderOfScore = true;
 	    this.scoreNeededToLevel = 500;
+	    this.nextTetrisBlock2 =Math.floor(Math.random()*7);
+	    this.nextTetrisBlock3 =Math.floor(Math.random()*7);
+	    this.nextTetrisBlock4 =Math.floor(Math.random()*7);
 	
 	  }
 	  run(){
@@ -96,9 +99,6 @@
 	    this.background();
 	    this.setTetris();
 	    this.nextTetrisBlock = Math.floor(Math.random()*7);
-	    this.nextTetrisBlock2 =Math.floor(Math.random()*7);
-	    this.nextTetrisBlock3 =Math.floor(Math.random()*7);
-	    this.nextTetrisBlock4 =Math.floor(Math.random()*7);
 	    this.renderTetris();
 	    createjs.Ticker.setFPS(100);
 	    createjs.Ticker.addEventListener("tick",this.stage);
@@ -120,39 +120,45 @@
 	  }
 	
 	
-	  background() {
 	
-	  	this.backgorund = new createjs.Shape();
-	  	this.hid = new createjs.Shape();
-	  	this.hid.graphics.beginFill('#ffffff');
-	  	this.hid.graphics.rect(0,this.size*2,this.size*this.col,this.size*(this.row));
-	  	this.backgorund.mask = this.hid;
-	  	this.backgorund.graphics.beginStroke('#000000');
-	  	for (let i = 0; i < this.row; i++) {
-	  		this.active[i] = [];
-	  		this.dead[i] = [];
-	  		for (let j = 0; j < this.col; j++) {
-	  			this.active[i][j]=0;
-	  			this.dead[i][j]=null;
-	        // var image = new Image();
-	        // image.onload = function(){
-	        //
-	        // }
-	        this.block = new createjs.Bitmap("./tetris_blocks2.0/dark_tetris2.0.png");
-	        // this.stage.addChild(this.block);
-	        let _this = this;
-	        this.block.image.onload = function() {
-	          _this.stage.update();
-	        }
-	        this.backgorund.graphics.beginBitmapFill(this.block.image).rect(this.size*j,this.size*i,this.size,this.size);
-	        // image.src = `tetris_blocks2.0/light_tetris2.0.png`;
-	  			// this.backgorund.graphics.beginFill(this.backgorundColors[((j % 2) + (i % 2)) % 2], 0);
-	        this.stage.addChild(this.backgorund);
-	        this.stage.update();
-	  			// this.backgorund.graphics.rect(this.size*j,this.size*i,this.size,this.size);
-	  		}
-	  	}
-	  }
+	    background() {
+	
+	    	let backgorund = new createjs.Shape();
+	    	this.hid = new createjs.Shape();
+	    	this.hid.graphics.beginFill('#ffffff');
+	    	this.hid.graphics.rect(0,this.size*2,this.size*this.col,this.size*(this.row));
+	    	backgorund.mask = this.hid;
+	    	backgorund.graphics.beginStroke('#000000');
+	    	for (let i = 0; i < this.row; i++) {
+	    		this.active[i] = [];
+	    		this.dead[i] = [];
+	    		for (let j = 0; j < this.col; j++) {
+	    			this.active[i][j]=0;
+	    			this.dead[i][j]=null;
+	          // var image = new Image();
+	          // image.onload = function(){
+	          //
+	          // }
+	          let block  = new createjs.Bitmap("./tetris_blocks2.0/dark_tetris2.0.png");
+	          // this.stage.addChild(this.block);
+	          // this.stage.update();
+	
+	          // this.stage.addChild(this.block);
+	          let _this = this;
+	           block.image.onload = function() {
+	
+	            _this.stage.update();
+	            backgorund.graphics.beginBitmapFill(block.image).rect(_this.size*j,_this.size*i,_this.size,_this.size);
+	            backgorund.graphics.endFill();
+	            // image.src = `tetris_blocks2.0/light_tetris2.0.png`;
+	            // _this.backgorund.graphics.beginFill(_this.backgorundColors[((j % 2) + (i % 2)) % 2], 0);
+	            _this.stage.addChild(backgorund);
+	            _this.stage.update();
+	          }
+	    			// this.backgorund.graphics.rect(this.size*j,this.size*i,this.size,this.size);
+	    		}
+	    	}
+	    }
 	
 	  setTetris() {
 	  	this.tetrisBlocks[0]=[
@@ -309,14 +315,14 @@
 	    this.nextTetrisBlock3 = this.nextTetrisBlock4;
 	    this.nextTetrisBlock4=Math.floor(Math.random()*7);
 	  	this.currentRotation=0;
-	  	this.tRow=1;
-	  	this.tCol=3;
+	  	this.currentTetrisRow=1;
+	  	this.currentTetrisCol=3;
 	  	this.drawTetrisBlock();
 	  	this.drawNext();
 	    this.drawNext2();
 	    this.drawNext3();
 	    this.drawNext4();
-	  	if (this.check(this.tRow,this.tCol,this.currentRotation)) {
+	  	if (this.check(this.currentTetrisRow,this.currentTetrisCol,this.currentRotation)) {
 	  		clearTimeout(this.timeCount);
 	      let _this = this;
 	  		this.timeCount = setInterval(this.onTime.bind(this), (time - (this.level *75)));
@@ -332,8 +338,8 @@
 	
 	
 	
-	  	this.stage.addChild(this.tetrisBlock);
-	  	this.tetrisBlock.mask = this.masker;
+	  	// this.stage.addChild(this.tetrisBlock);
+	  	// this.tetrisBlock.mask = this.masker;
 	  	this.tetrisBlock.graphics.beginStroke('#111111');
 	    for (var i=0; i<this.tetrisBlocks[ct][this.currentRotation].length; i++) {
 	      for (var j=0; j<this.tetrisBlocks[ct][this.currentRotation][i].length; j++) {
@@ -346,18 +352,18 @@
 	          this.block.image.onload = function() {
 	            _this.stage.update();
 	          }
-	
 	          this.tetrisBlock.graphics.beginBitmapFill(this.block.image).rect(this.size*j,this.size*i,this.size,this.size);
 	          this.stage.addChild(this.tetrisBlock);
-	            this.stage.update();
+	
 	  			}
 	  		}
 	  	}
 	  	this.placeTetrisBlock();
+	    this.stage.update();
 	  }
 	  placeTetrisBlock() {
-	  	this.tetrisBlock.x=this.tCol*this.size;
-	  	this.tetrisBlock.y=this.tRow*this.size;
+	  	this.tetrisBlock.x=this.currentTetrisCol*this.size;
+	  	this.tetrisBlock.y=this.currentTetrisRow*this.size;
 	  }
 	  pause(){
 	    this.pause = true;
@@ -386,8 +392,8 @@
 	        this.nextTetrisBlock3;
 	        this.nextTetrisBlock4;
 	        this.currentRotation;
-	        this.tRow;
-	        this.tCol;
+	        this.currentTetrisRow;
+	        this.currentTetrisCol;
 	        this.timeCount;
 	        this.next_t;
 	        this.next_t2;
@@ -416,8 +422,8 @@
 	        this.nextTetrisBlock3;
 	        this.nextTetrisBlock4;
 	        this.currentRotation;
-	        this.tRow;
-	        this.tCol;
+	        this.currentTetrisRow;
+	        this.currentTetrisCol;
 	        this.timeCount;
 	        this.next_t;
 	        this.next_t2;
@@ -434,42 +440,41 @@
 	      break;
 	  		case 37 :
 	  		if (this.gameOver || this.pause) return;
-	  		if (this.check(this.tRow,this.tCol-1,this.currentRotation)) {
-	  			this.tCol--;
+	  		if (this.check(this.currentTetrisRow,this.currentTetrisCol-1,this.currentRotation)) {
+	  			this.currentTetrisCol--;
 	  			this.placeTetrisBlock();
 	  		}
 	  		e.preventDefault();
 	  		break;
 	  		case 39 :
 	  		if (this.gameOver || this.pause) return;
-	  		if (this.check(this.tRow,this.tCol+1,this.currentRotation)) {
-	  			this.tCol++;
+	  		if (this.check(this.currentTetrisRow,this.currentTetrisCol+1,this.currentRotation)) {
+	  			this.currentTetrisCol++;
 	  			this.placeTetrisBlock();
 	  		}
 	  		e.preventDefault();
 	  		break;
 	  		case 38 :
 	  		if (this.gameOver || this.pause) return;
-	  		if (this.tRow < 0) this.tRow = 0;
-	  		if (this.tCol < 0) this.tCol = 0;
-	  		if (this.tCol > this.col - this.tetrisBlocks[this.activeTetris][this.currentRotation].length)
-	  			this.tCol = this.col - this.tetrisBlocks[this.activeTetris][this.currentRotation].length;
+	  		if (this.currentTetrisRow < 0) this.currentTetrisRow = 0;
+	  		if (this.currentTetrisCol < 0) this.currentTetrisCol = 0;
+	  		if (this.currentTetrisCol > this.col - this.tetrisBlocks[this.activeTetris][this.currentRotation].length)
+	  			this.currentTetrisCol = this.col - this.tetrisBlocks[this.activeTetris][this.currentRotation].length;
 	  		let ct=this.currentRotation;
-	          //check rotate
-	  		let tmpRow = this.tRow;
-	  		let tmpCol = this.tCol;
+	  		let tmpRow = this.currentTetrisRow;
+	  		let tmpCol = this.currentTetrisCol;
 	  		let tmpRot = ct;
 	  		let rot = (ct + 1) % this.tetrisBlocks[this.activeTetris].length;
-	  		if (this.check(this.tRow, this.tCol, rot)) {
+	  		if (this.check(this.currentTetrisRow, this.currentTetrisCol, rot)) {
 	  			this.currentRotation=rot;
 	  			this.stage.removeChild(this.tetrisBlock);
 	  			this.drawTetrisBlock();
 	  			this.placeTetrisBlock();
 	  		}
-	  		if(!this.check(this.tRow, this.tCol, rot)) {
+	  		if(!this.check(this.currentTetrisRow, this.currentTetrisCol, rot)) {
 	  			this.currentRotation = tmpRot;
-	  			this.tCol = tmpCol;
-	  			this.tRow = tmpRow;
+	  			this.currentTetrisCol = tmpCol;
+	  			this.currentTetrisRow = tmpRow;
 	  			this.stage.removeChild(this.tetrisBlock);
 	  			this.drawTetrisBlock();
 	  			this.placeTetrisBlock();
@@ -478,8 +483,8 @@
 	  		break;
 	  		case 40 :
 	  		if (this.gameOver || this.pause) return;
-	  		if (this.check(this.tRow+1,this.tCol)) {
-	  			this.tRow++;
+	  		if (this.check(this.currentTetrisRow+1,this.currentTetrisCol)) {
+	  			this.currentTetrisRow++;
 	  			this.placeTetrisBlock();
 	  		} else {
 	  			this.landTetrisBlock();
@@ -501,12 +506,12 @@
 	  				// landed.mask = this.masker;
 	          landed.graphics.beginStroke('#111111');
 	  				landed.graphics.beginFill(this.colors[this.activeTetris]);
-	  				landed.graphics.drawRect(this.size*(this.tCol+j),this.size*(this.tRow+i),this.size,this.size);
+	  				landed.graphics.drawRect(this.size*(this.currentTetrisCol+j),this.size*(this.currentTetrisRow+i),this.size,this.size);
 	  				this.stage.addChild(landed);
 	
-	  				this.active[this.tRow+i][this.tCol+j]=1;
+	  				this.active[this.currentTetrisRow+i][this.currentTetrisCol+j]=1;
 	
-	  				this.dead[this.tRow+i][this.tCol+j]=landed;
+	  				this.dead[this.currentTetrisRow+i][this.currentTetrisCol+j]=landed;
 	  			}
 	  		}
 	  	}
@@ -564,8 +569,11 @@
 	        case 4:
 	          if(this.bonus){
 	            this.score =this.score + 1200;
+	            this.level =this.level + 1;
+	            this.scoreNeededToLevel = this.scoreNeededToLevel + 500;
 	          } else{
 	            this.score =this.score + 800;
+	            this.level = this.level +1
 	            this.bonus = true;
 	          }
 	          if(this.score >= this.scoreNeededToLevel){
@@ -582,8 +590,8 @@
 	    if (this.pause){
 	      return;
 	    }
-	  	if (this.check(this.tRow+1,this.tCol,this.currentRotation)) {
-	  		this.tRow++;
+	  	if (this.check(this.currentTetrisRow+1,this.currentTetrisCol,this.currentRotation)) {
+	  		this.currentTetrisRow++;
 	  		this.placeTetrisBlock();
 	  	} else {
 	  		this.landTetrisBlock();
@@ -601,16 +609,16 @@
 	  	for (let i=0; i < this.tetrisBlocks[this.nextTetrisBlock][0].length; i++) {
 	  		for (let j=0; j < this.tetrisBlocks[this.nextTetrisBlock][0][i].length; j++) {
 	  			if (this.tetrisBlocks[this.nextTetrisBlock][0][i][j]==1) {
-	          this.block = new createjs.Bitmap(this.colors[this.nextTetrisBlock]);
-	          // this.stage.addChild(this.block);
+	          let block = new createjs.Bitmap(this.colors[this.nextTetrisBlock]);
+	          // this.stage.addChild(block);
 	          let _this = this;
-	          this.block.image.onload = function() {
+	          block.image.onload = function() {
+	            _this.stage.update();
+	            _this.next_t.graphics.beginBitmapFill(block.image).rect(_this.size*j,_this.size*i,_this.size,_this.size);
+	            _this.stage.addChild(_this.next_t);
 	            _this.stage.update();
 	          }
 	
-	          this.next_t.graphics.beginBitmapFill(this.block.image).rect(this.size*j,this.size*i,this.size,this.size);
-	          this.stage.addChild(this.next_t);
-	            this.stage.update();
 	
 	
 	
@@ -649,16 +657,16 @@
 	        for (let j=0; j < this.tetrisBlocks[this.nextTetrisBlock2][0][i].length; j++) {
 	          if (this.tetrisBlocks[this.nextTetrisBlock2][0][i][j]==1) {
 	
-	            this.block = new createjs.Bitmap(this.colors[this.nextTetrisBlock2]);
-	            // this.stage.addChild(this.block);
+	             let block = new createjs.Bitmap(this.colors[this.nextTetrisBlock2]);
+	            // this.stage.addChild(block);
 	            let _this = this;
-	            this.block.image.onload = function() {
+	            block.image.onload = function() {
+	              _this.stage.update();
+	              _this.next_t2.graphics.beginBitmapFill(block.image).rect(_this.size*j,_this.size*i,_this.size,_this.size);
+	              _this.stage.addChild(_this.next_t2);
 	              _this.stage.update();
 	            }
 	
-	            this.next_t2.graphics.beginBitmapFill(this.block.image).rect(this.size*j,this.size*i,this.size,this.size);
-	            this.stage.addChild(this.next_t2);
-	              this.stage.update();
 	
 	            // this.next_t2.graphics.beginFill(this.colors[this.nextTetrisBlock2]);
 	            // this.next_t2.graphics.drawRect(this.size*j,this.size*i,this.size,this.size);
@@ -677,16 +685,15 @@
 	        for (let i=0; i < this.tetrisBlocks[this.nextTetrisBlock3][0].length; i++) {
 	          for (let j=0; j < this.tetrisBlocks[this.nextTetrisBlock3][0][i].length; j++) {
 	            if (this.tetrisBlocks[this.nextTetrisBlock3][0][i][j]==1) {
-	              this.block = new createjs.Bitmap(this.colors[this.nextTetrisBlock3]);
-	              // this.stage.addChild(this.block);
+	              let block = new createjs.Bitmap(this.colors[this.nextTetrisBlock3]);
+	              // this.stage.addChild(block);
 	              let _this = this;
-	              this.block.image.onload = function() {
+	              block.image.onload = function() {
+	                _this.stage.update();
+	                _this.next_t3.graphics.beginBitmapFill(block.image).rect(_this.size*j,_this.size*i,_this.size,_this.size);
+	                _this.stage.addChild(_this.next_t3);
 	                _this.stage.update();
 	              }
-	
-	              this.next_t3.graphics.beginBitmapFill(this.block.image).rect(this.size*j,this.size*i,this.size,this.size);
-	              this.stage.addChild(this.next_t3);
-	                this.stage.update();
 	
 	
 	
@@ -708,16 +715,15 @@
 	          for (let i=0; i < this.tetrisBlocks[this.nextTetrisBlock4][0].length; i++) {
 	            for (let j=0; j < this.tetrisBlocks[this.nextTetrisBlock4][0][i].length; j++) {
 	              if (this.tetrisBlocks[this.nextTetrisBlock4][0][i][j]==1) {
-	                this.block = new createjs.Bitmap(this.colors[this.nextTetrisBlock4]);
-	                // this.stage.addChild(this.block);
+	                let block = new createjs.Bitmap(this.colors[this.nextTetrisBlock4]);
+	                // this.stage.addChild(block);
 	                let _this = this;
-	                this.block.image.onload = function() {
+	                block.image.onload = function() {
+	                  _this.stage.update();
+	                  _this.next_t4.graphics.beginBitmapFill(block.image).rect(_this.size*j,_this.size*i,_this.size,_this.size);
+	                  _this.stage.addChild(_this.next_t4);
 	                  _this.stage.update();
 	                }
-	
-	                this.next_t4.graphics.beginBitmapFill(this.block.image).rect(this.size*j,this.size*i,this.size,this.size);
-	                this.stage.addChild(this.next_t4);
-	                  this.stage.update();
 	
 	
 	                // this.next_t4.graphics.beginFill(this.colors[this.nextTetrisBlock4]);
