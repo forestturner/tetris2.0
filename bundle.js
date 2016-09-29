@@ -92,6 +92,7 @@
 	    this.nextTetrisBlock2 =Math.floor(Math.random()*7);
 	    this.nextTetrisBlock3 =Math.floor(Math.random()*7);
 	    this.nextTetrisBlock4 =Math.floor(Math.random()*7);
+	    this.start_twice = 0;
 	
 	  }
 	  run(){
@@ -116,7 +117,12 @@
 	    arrowTxt.y=400;
 	    this.stage.addChild(startTxt);
 	    this.stage.addChild(resetTxt);
-	    this.stage.addChild(arrowTxt)
+	    this.stage.addChild(arrowTxt);
+	    // if(start_twice ===  0 ){
+	    //   start_twice++;
+	    //   this.run();
+	    // }
+	
 	  }
 	
 	
@@ -406,6 +412,7 @@
 	        this.colors =[];
 	        this.score =0;
 	        this.level=1;
+	        this.scoreNeededToLevel = 500;
 	        this.run();
 	      e.preventDefault();
 	      break;
@@ -435,6 +442,7 @@
 	        this.firstRenderOfScore = true;
 	        this.colors =[];
 	        this.score =0;
+	        this.scoreNeededToLevel = 500;
 	        this.run();
 	      e.preventDefault();
 	      break;

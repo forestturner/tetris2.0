@@ -16,3 +16,12 @@ p {
 	margin:0 auto;
 	text-align:center;
 }
+
+body {
+
+    background-image: url("http://res.cloudinary.com/dnuopy1ir/image/upload/v1475169549/HD-Background-Wallpapers-22_rukwwd.jpg");
+    -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+}
