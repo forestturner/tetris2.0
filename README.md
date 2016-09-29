@@ -1,6 +1,6 @@
 # Tetris2.0
 
-[Tetris](https://forestturner.github.io)
+[Tetris](https://forestturner.github.io/tetris2.0/)
 
 This is a javascript game to a replica of tetris.
 
