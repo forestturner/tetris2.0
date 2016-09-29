@@ -535,7 +535,7 @@ class Tetris {
             this.scoreNeededToLevel = this.scoreNeededToLevel + 500;
           } else{
             this.score =this.score + 800;
-            this.level = this.level +1
+            this.level = this.level + 1
             this.bonus = true;
           }
           if(this.score >= this.scoreNeededToLevel){
@@ -552,7 +552,7 @@ class Tetris {
     if (this.pause){
       return;
     }
-  	if (this.check(this.currentTetrisRow+1,this.currentTetrisCol,this.currentRotation)) {
+  	if (this.check(this.currentTetrisRow + 1,this.currentTetrisCol,this.currentRotation)) {
   		this.currentTetrisRow++;
   		this.placeTetrisBlock();
   	} else {
