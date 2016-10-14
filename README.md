@@ -15,7 +15,7 @@ Instructions: Use arrow keys to move, s to start and r to reset.
 
 1) Tetris block fall, and build up. When a row is completely full, destroy the row. See incoming tetris blocks.
 
-![gamePlay](./tetris_blocks2.0/gamePlay.png)
+![gamePlay](http://res.cloudinary.com/dnuopy1ir/image/upload/v1476429183/Selection_067_eurfyv.png)
 
 2) Score is kept. 100 per line or 800 for a tetris.
 
