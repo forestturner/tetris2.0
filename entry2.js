@@ -46,7 +46,6 @@ class Tetris {
     this.nextTetrisBlock2 =Math.floor(Math.random()*7);
     this.nextTetrisBlock3 =Math.floor(Math.random()*7);
     this.nextTetrisBlock4 =Math.floor(Math.random()*7);
-    this.start_twice = 0;
 
   }
   run(){
@@ -71,12 +70,7 @@ class Tetris {
     arrowTxt.y=400;
     this.stage.addChild(startTxt);
     this.stage.addChild(resetTxt);
-    this.stage.addChild(arrowTxt);
-    // if(start_twice ===  0 ){
-    //   start_twice++;
-    //   this.run();
-    // }
-
+    this.stage.addChild(arrowTxt)
   }
 
 
@@ -535,7 +529,7 @@ class Tetris {
             this.scoreNeededToLevel = this.scoreNeededToLevel + 500;
           } else{
             this.score =this.score + 800;
-            this.level = this.level + 1
+            this.level = this.level +1
             this.bonus = true;
           }
           if(this.score >= this.scoreNeededToLevel){
@@ -552,7 +546,7 @@ class Tetris {
     if (this.pause){
       return;
     }
-  	if (this.check(this.currentTetrisRow + 1,this.currentTetrisCol,this.currentRotation)) {
+  	if (this.check(this.currentTetrisRow+1,this.currentTetrisCol,this.currentRotation)) {
   		this.currentTetrisRow++;
   		this.placeTetrisBlock();
   	} else {
