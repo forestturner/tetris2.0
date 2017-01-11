@@ -51,7 +51,9 @@ class Tetris {
   run(){
     this.stage = new createjs.Stage(this.canvas);
     this.background();
+    debugger
     this.setTetris();
+    debugger;
     this.nextTetrisBlock = Math.floor(Math.random()*7);
     this.renderTetris();
     createjs.Ticker.setFPS(100);
@@ -59,9 +61,9 @@ class Tetris {
     this.stage.update();
     let _this = this;
     window.addEventListener('keydown',_this.onkeydown);
-    var startTxt = new createjs.Text(' s to start', 'Bold 14px Helvetica', '#000000');
-    var resetTxt = new createjs.Text(' r to restart', 'Bold 14px Helvetica', '#000000');
-    var arrowTxt = new createjs.Text(' arrow keys to move', 'Bold 14px Helvetica', '#000000');
+    var startTxt = new createjs.Text(' s to start', 'Bold 21px Helvetica', '#000000');
+    var resetTxt = new createjs.Text(' r to restart', 'Bold 21px Helvetica', '#000000');
+    var arrowTxt = new createjs.Text(' arrow keys to move', 'Bold 21px Helvetica', '#000000');
     startTxt.x=this.size*(this.col+1);
     startTxt.y=360;
     resetTxt.x=this.size*(this.col+1);
@@ -76,7 +78,7 @@ class Tetris {
 
 
     background() {
-
+debugger
     	let backgorund = new createjs.Shape();
     	this.hid = new createjs.Shape();
     	this.hid.graphics.beginFill('#ffffff');
@@ -458,8 +460,8 @@ class Tetris {
   	for (let i=0; i<this.tetrisBlocks[ct][this.currentRotation].length; i++) {
   		for (let j=0; j<this.tetrisBlocks[ct][this.currentRotation][i].length; j++) {
   			if (this.tetrisBlocks[ct][this.currentRotation][i][j]==1) {
+
   				landed = new createjs.Shape();
-  				// landed.mask = this.masker;
           landed.graphics.beginStroke('#111111');
   				landed.graphics.beginFill(this.colors[this.activeTetris]);
   				landed.graphics.drawRect(this.size*(this.currentTetrisCol+j),this.size*(this.currentTetrisRow+i),this.size,this.size);
@@ -490,7 +492,7 @@ class Tetris {
   					if (this.active[j][k]==1) {
   						this.active[j][k]=0;
   						this.active[j+1][k]=1;
-  						this.dead[j][k].y+=this.size;
+  						// this.dead[j][k].y+=this.size;
   						this.dead[j+1][k]=this.dead[j][k];
   					}
   				}
@@ -590,7 +592,7 @@ class Tetris {
 
     if(this.firstRenderOfScore){
       let score = ` score: ${this.score} level: ${this.level}`;
-      this.scoreTxt = new createjs.Text(score, 'Bold 14px Helvetica', '#000000');
+      this.scoreTxt = new createjs.Text(score, 'Bold 21px Helvetica', '#000000');
       this.scoreTxt.x=this.size*(this.col+1);
       this.scoreTxt.y=420;
       this.stage.addChild(this.scoreTxt);
